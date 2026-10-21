@@ -1,0 +1,47 @@
+{
+  "archivos": 30,
+  "errores": 5,
+  "avisos": 0,
+  "hallazgos": [
+    {
+      "archivo": "public/js/script.js",
+      "linea": 43,
+      "columna": 14,
+      "regla": "no-unused-vars",
+      "mensaje": "'error' se captura pero no se usa (caughtErrors).",
+      "severidad": "error"
+    },
+    {
+      "archivo": "public/js/script.js",
+      "linea": 109,
+      "columna": 14,
+      "regla": "no-unused-vars",
+      "mensaje": "'error' se captura pero no se usa (caughtErrors).",
+      "severidad": "error"
+    },
+    {
+      "archivo": "public/js/script.js",
+      "linea": 128,
+      "columna": 14,
+      "regla": "no-unused-vars",
+      "mensaje": "'error' se captura pero no se usa (caughtErrors).",
+      "severidad": "error"
+    },
+    {
+      "archivo": "scripts/servidor-evidencia.js",
+      "linea": 35,
+      "columna": 9,
+      "regla": "no-unused-vars",
+      "mensaje": "'config' is declared but its value is never read.",
+      "severidad": "error"
+    },
+    {
+      "archivo": "src/middleware/errorHandler.js",
+      "linea": 14,
+      "columna": 38,
+      "regla": "no-unused-vars",
+      "mensaje": "'next' is defined but never used (after-used).",
+      "severidad": "error"
+    }
+  ]
+}

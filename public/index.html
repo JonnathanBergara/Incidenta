@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Panel para registrar, consultar y dar seguimiento a incidentes.">
+  <title>Incidenta | Gestión de incidentes</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+  <script type="module" src="js/main.mjs"></script>
+</head>
+<body>
+  <a class="skip-link" href="#contenido">Saltar al contenido principal</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="index.html" aria-label="Incidenta, inicio">
+        <span class="brand-mark" aria-hidden="true">+</span>
+        <span>incidenta</span>
+      </a>
+      <nav aria-label="Navegación principal">
+        <a class="nav-link is-active" href="#resumen">Resumen</a>
+        <a class="nav-link" href="#incidentes">Incidentes</a>
+        <a class="nav-link" href="#nuevo-incidente">Registrar</a>
+      </nav>
+      <div class="header-status"><span class="status-dot" aria-hidden="true"></span> Sistema operativo</div>
+      <div class="session-bar" id="session-bar" hidden>
+        <span id="session-user"></span>
+        <button class="link-button" id="logout-button" type="button">Cerrar sesión</button>
+      </div>
+    </div>
+  </header>
+  <p class="api-banner" id="api-banner" role="alert" hidden></p>
+
+  <main id="contenido">
+    <section class="hero" id="resumen" aria-labelledby="page-title">
+      <div>
+        <p class="eyebrow">Centro de operaciones / <span id="fecha-hoy"></span></p>
+        <h1 id="page-title">Mantén cada incidente<br><em>bajo control.</em></h1>
+        <p class="hero-copy">Registra, prioriza y da seguimiento a los eventos que requieren atención de tu equipo.</p>
+      </div>
+      <a class="button button-primary" href="#nuevo-incidente"><span aria-hidden="true">+</span> Nuevo incidente</a>
+    </section>
+
+    <section class="stats-grid" aria-label="Resumen de incidentes">
+      <article class="stat-card stat-total">
+        <div class="stat-top"><span>Total registrados</span><span class="stat-icon" aria-hidden="true">#</span></div>
+        <strong id="total-incidents">0</strong>
+        <p>Historial completo</p>
+      </article>
+      <article class="stat-card stat-open">
+        <div class="stat-top"><span>Requieren atención</span><span class="stat-icon" aria-hidden="true">!</span></div>
+        <strong id="open-incidents">0</strong>
+        <p>Abiertos o en progreso</p>
+      </article>
+      <article class="stat-card stat-critical">
+        <div class="stat-top"><span>Alta prioridad</span><span class="stat-icon" aria-hidden="true">↑</span></div>
+        <strong id="critical-incidents">0</strong>
+        <p>Revisión recomendada</p>
+      </article>
+      <article class="stat-card stat-resolved">
+        <div class="stat-top"><span>Resueltos</span><span class="stat-icon" aria-hidden="true">✓</span></div>
+        <strong id="resolved-incidents">0</strong>
+        <p>Cerrados con éxito</p>
+      </article>
+    </section>
+
+    <div class="workspace-grid">
+      <section class="panel incidents-panel" id="incidentes" aria-labelledby="incidents-title">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">Seguimiento</p>
+            <h2 id="incidents-title">Incidentes recientes</h2>
+          </div>
+          <span class="result-count" id="result-count" aria-live="polite">0 resultados</span>
+        </div>
+        <div class="toolbar">
+          <label class="search-field">
+            <span class="sr-only">Buscar incidentes</span>
+            <span aria-hidden="true">⌕</span>
+            <input id="search-input" type="search" placeholder="Buscar por título o categoría" autocomplete="off">
+          </label>
+          <label class="select-field">
+            <span class="sr-only">Filtrar por estado</span>
+            <select id="status-filter">
+              <option value="all">Todos los estados</option>
+              <option value="Abierto">Abierto</option>
+              <option value="En progreso">En progreso</option>
+              <option value="Resuelto">Resuelto</option>
+            </select>
+          </label>
+          <label class="select-field">
+            <span class="sr-only">Filtrar por prioridad</span>
+            <select id="priority-filter">
+              <option value="all">Toda prioridad</option>
+              <option value="Alta">Alta</option>
+              <option value="Media">Media</option>
+              <option value="Baja">Baja</option>
+            </select>
+          </label>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <caption class="sr-only">Listado de incidentes registrados</caption>
+            <thead>
+              <tr><th scope="col">Incidente</th><th scope="col">Prioridad</th><th scope="col">Estado</th><th scope="col">Fecha</th><th scope="col"><span class="sr-only">Acciones</span></th></tr>
+            </thead>
+            <tbody id="incident-list"></tbody>
+          </table>
+          <div class="empty-state" id="empty-state" hidden>
+            <span class="empty-mark" aria-hidden="true">—</span>
+            <h3>No hay incidentes que mostrar</h3>
+            <p>Prueba con otro filtro o registra el primer incidente.</p>
+          </div>
+        </div>
+        <nav class="pagination" aria-label="Paginación de incidentes">
+          <button class="button button-secondary" id="page-previous" type="button" disabled>Anterior</button>
+          <span id="page-info" aria-live="polite">Sin páginas</span>
+          <button class="button button-secondary" id="page-next" type="button" disabled>Siguiente</button>
+        </nav>
+      </section>
+
+      <aside class="panel form-panel" id="nuevo-incidente" aria-labelledby="form-title">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">Registro rápido</p>
+            <h2 id="form-title">Nuevo incidente</h2>
+          </div>
+          <span class="form-step" aria-hidden="true">01</span>
+        </div>
+        <form id="incident-form" novalidate>
+          <div class="field-group">
+            <label for="title">Título del incidente <span aria-hidden="true">*</span></label>
+            <input id="title" name="title" type="text" required maxlength="80" placeholder="Ej. Servidor de reportes lento">
+            <small class="field-error" id="title-error"></small>
+          </div>
+          <div class="field-group split-fields">
+            <div>
+              <label for="category">Categoría <span aria-hidden="true">*</span></label>
+              <select id="category" name="category" required>
+                <option value="">Selecciona</option>
+                <option>Infraestructura</option>
+                <option>Aplicación</option>
+                <option>Seguridad</option>
+                <option>Acceso</option>
+                <option>Otro</option>
+              </select>
+              <small class="field-error" id="category-error"></small>
+            </div>
+            <div>
+              <label for="priority">Prioridad <span aria-hidden="true">*</span></label>
+              <select id="priority" name="priority" required>
+                <option value="">Selecciona</option>
+                <option>Alta</option>
+                <option>Media</option>
+                <option>Baja</option>
+              </select>
+              <small class="field-error" id="priority-error"></small>
+            </div>
+          </div>
+          <div class="field-group split-fields">
+            <div>
+              <label for="incident-date">Fecha <span aria-hidden="true">*</span></label>
+              <input id="incident-date" name="date" type="date" required>
+              <small class="field-error" id="incident-date-error"></small>
+            </div>
+            <div>
+              <label for="reporter-email">Tu email <span aria-hidden="true">*</span></label>
+              <input id="reporter-email" name="email" type="email" required placeholder="tu@empresa.com" autocomplete="email">
+              <small class="field-error" id="reporter-email-error"></small>
+            </div>
+          </div>
+          <div class="field-group">
+            <label for="description">Descripción <span aria-hidden="true">*</span></label>
+            <textarea id="description" name="description" rows="4" required maxlength="500" placeholder="Describe qué ocurrió y su impacto..."></textarea>
+            <small class="field-error" id="description-error"></small>
+          </div>
+          <div class="form-actions">
+            <button class="button button-primary button-full" type="submit">Registrar incidente <span aria-hidden="true">→</span></button>
+            <p class="required-note"><span aria-hidden="true">*</span> Campos obligatorios</p>
+          </div>
+          <p class="form-feedback" id="form-feedback" role="status" aria-live="polite"></p>
+        </form>
+      </aside>
+    </div>
+  </main>
+
+  <dialog id="login-dialog" aria-labelledby="login-title">
+    <div class="dialog-inner">
+      <p class="eyebrow">Acceso restringido</p>
+      <h2 id="login-title">Iniciar sesión</h2>
+      <form id="login-form" novalidate>
+        <div class="field-group">
+          <label for="login-username">Usuario</label>
+          <input id="login-username" name="username" type="text" required maxlength="32" autocomplete="username" autocapitalize="none" spellcheck="false">
+        </div>
+        <div class="field-group">
+          <label for="login-password">Contraseña</label>
+          <input id="login-password" name="password" type="password" required maxlength="128" autocomplete="current-password">
+        </div>
+        <button class="button button-primary button-full" type="submit">Entrar <span aria-hidden="true">→</span></button>
+        <p class="login-error" id="login-error" role="alert"></p>
+      </form>
+    </div>
+  </dialog>
+
+  <dialog id="detail-dialog" aria-labelledby="detail-title">
+    <div class="dialog-inner">
+      <button class="dialog-close" type="button" aria-label="Cerrar detalle">×</button>
+      <p class="eyebrow" id="detail-category">Detalle del incidente</p>
+      <h2 id="detail-title"></h2>
+      <div class="detail-meta" id="detail-meta"></div>
+      <div class="detail-description" id="detail-description"></div>
+      <div class="dialog-actions">
+        <button class="button button-secondary" id="close-detail" type="button">Cerrar</button>
+        <button class="button button-danger" id="delete-detail" type="button">Eliminar</button>
+        <button class="button button-primary" id="resolve-detail" type="button">Marcar resuelto</button>
+      </div>
+    </div>
+  </dialog>
+
+  <footer class="site-footer"><span>incidenta</span><span>Gestión clara para equipos atentos.</span></footer>
+</body>
+</html>

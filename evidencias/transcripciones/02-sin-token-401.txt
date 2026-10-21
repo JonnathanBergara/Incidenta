@@ -1,0 +1,19 @@
+# Sin cabecera Authorization
+$ curl -i -X GET http://localhost:3000/api/incidentes
+HTTP 401
+www-authenticate: Bearer
+{"error":"Se requiere autenticación: envíe la cabecera Authorization: Bearer <token>."}
+
+# Token manipulado (firma alterada)
+$ curl -i -X GET http://localhost:3000/api/incidentes \
+    -H "Authorization: Bearer eyJhbGciOiJIUzI1Ni…"
+HTTP 401
+www-authenticate: Bearer
+{"error":"Token inválido."}
+
+# Token con alg "none"
+$ curl -i -X GET http://localhost:3000/api/incidentes \
+    -H "Authorization: Bearer eyJhbGciOiJub25lIi…"
+HTTP 401
+www-authenticate: Bearer
+{"error":"Token inválido."}

@@ -1,0 +1,19 @@
+# Lector intenta CREAR
+$ curl -i -X POST http://localhost:3000/api/incidentes \
+    -H "Authorization: Bearer eyJhbGciOiJIUzI1Ni…" \
+    -H "Content-Type: application/json" -d '{"title":"Prueba","category":"Otro","priority":"Baja"}'
+HTTP 403
+{"error":"Su rol no tiene permiso para realizar esta acción."}
+
+# Analista intenta ELIMINAR
+$ curl -i -X DELETE http://localhost:3000/api/incidentes/1 \
+    -H "Authorization: Bearer eyJhbGciOiJIUzI1Ni…"
+HTTP 403
+{"error":"Su rol no tiene permiso para realizar esta acción."}
+
+# Analista intenta crear USUARIOS
+$ curl -i -X POST http://localhost:3000/api/auth/usuarios \
+    -H "Authorization: Bearer eyJhbGciOiJIUzI1Ni…" \
+    -H "Content-Type: application/json" -d '{"username":"nuevo","password":"Clave-Segura-2026","role":"lector"}'
+HTTP 403
+{"error":"Su rol no tiene permiso para realizar esta acción."}

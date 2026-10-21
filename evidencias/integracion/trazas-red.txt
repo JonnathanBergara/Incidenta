@@ -1,0 +1,19 @@
+Motor del servidor: Express
+Navegador: Chromium 156.0.8078.4
+
+[anónimo] POST   /api/auth/login        Authorization: (sin cabecera)  ->  401
+[lector] POST   /api/auth/login        Authorization: (sin cabecera)  ->  200
+[lector] GET    /api/incidentes        Authorization: Bearer ***  ->  200
+[analista] POST   /api/auth/login        Authorization: (sin cabecera)  ->  200
+[analista] GET    /api/incidentes        Authorization: Bearer ***  ->  200
+[analista] POST   /api/incidentes        Authorization: Bearer ***  ->  201
+[analista] GET    /api/incidentes        Authorization: Bearer ***  ->  200
+[analista] POST   /api/incidentes        Authorization: Bearer ***  ->  400
+[analista] PATCH  /api/incidentes/5      Authorization: Bearer ***  ->  200
+[analista] GET    /api/incidentes        Authorization: Bearer ***  ->  200
+[analista] POST   /api/incidentes        Authorization: Bearer ***  ->  403
+[analista] GET    /api/incidentes        Authorization: Bearer ***  ->  401
+[admin] POST   /api/auth/login        Authorization: (sin cabecera)  ->  200
+[admin] GET    /api/incidentes        Authorization: Bearer ***  ->  200
+[admin] DELETE /api/incidentes/5      Authorization: Bearer ***  ->  204
+[admin] GET    /api/incidentes        Authorization: Bearer ***  ->  200

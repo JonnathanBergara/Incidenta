@@ -1,0 +1,26 @@
+# Campos obligatorios ausentes
+$ curl -i -X POST http://localhost:3000/api/incidentes \
+    -H "Authorization: Bearer eyJhbGciOiJIUzI1Ni…" \
+    -H "Content-Type: application/json" -d '{"title":""}'
+HTTP 400
+{"error":"Datos de entrada inválidos.","detalles":[{"campo":"title","mensaje":"El título debe tener entre 3 y 80 caracteres."},{"campo":"category","mensaje":"La categoría debe ser una de: Infraestructura, Aplicación, Seguridad, Acceso, Otro."},{"campo":"priority","mensaje":"La prioridad debe ser una de: Alta, Media, Baja."}]}
+
+# Mass assignment: campo role no permitido
+$ curl -i -X POST http://localhost:3000/api/incidentes \
+    -H "Authorization: Bearer eyJhbGciOiJIUzI1Ni…" \
+    -H "Content-Type: application/json" -d '{"title":"Intento","category":"Otro","priority":"Baja","role":"admin"}'
+HTTP 400
+{"error":"Datos de entrada inválidos.","detalles":[{"campo":"role","mensaje":"Campo no permitido."}]}
+
+# XSS: se eliminan las etiquetas antes de guardar
+$ curl -i -X POST http://localhost:3000/api/incidentes \
+    -H "Authorization: Bearer eyJhbGciOiJIUzI1Ni…" \
+    -H "Content-Type: application/json" -d '{"title":"Aviso <script>alert(1)</script> de red","category":"Seguridad","priority":"Media"}'
+HTTP 201
+{"id":5,"title":"Aviso alert(1) de red","category":"Seguridad","priority":"Media","status":"Abierto","date":"2026-10-21","email":null,"description":null,"created_at":"2026-10-21T04:16:19.263Z","updated_at":"2026-10-21T04:16:19.263Z"}
+
+# Inyección SQL en el id
+$ curl -i -X GET http://localhost:3000/api/incidentes/1%20OR%201=1 \
+    -H "Authorization: Bearer eyJhbGciOiJIUzI1Ni…"
+HTTP 400
+{"error":"Datos de entrada inválidos.","detalles":[{"campo":"id","mensaje":"El identificador debe ser un entero positivo."}]}

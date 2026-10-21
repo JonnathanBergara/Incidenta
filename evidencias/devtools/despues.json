@@ -1,0 +1,27 @@
+{
+  "etiqueta": "despues",
+  "motor": "Express",
+  "navegador": "Chromium 156.0.8078.4",
+  "filas": 50,
+  "d1_elements": {
+    "eyebrow": "Centro de operaciones / 16 octubre 2026",
+    "esperado": "Centro de operaciones / 16 octubre 2026"
+  },
+  "d2_sensors": {
+    "fechaPorDefecto": "2026-10-16",
+    "esperada": "2026-10-16"
+  },
+  "d4_performance": {
+    "teclas": 8,
+    "repintadosDeLaLista": 1,
+    "scriptMs": 3,
+    "layoutMs": 6,
+    "tareaMs": 467
+  },
+  "d3_network": {
+    "postEnviados": 1,
+    "filasEnBD": 1
+  },
+  "consola": [],
+  "issues": []
+}

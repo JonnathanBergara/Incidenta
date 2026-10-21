@@ -1,0 +1,37 @@
+{
+  "name": "incidenta-api",
+  "version": "3.2.0",
+  "description": "API REST de Incidenta (Express + PostgreSQL) con JWT y roles, cliente web MVC, pruebas, ESLint y documentación.",
+  "main": "server.js",
+  "engines": {
+    "node": ">=22.5.0"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "migrate": "node src/db/migrate.js",
+    "seed": "node src/db/seed.js",
+    "test": "npm run test:unit && npm run test:integration",
+    "test:evidencia": "node scripts/transcripcion.js",
+    "evidencia:navegador": "node scripts/capturas-navegador.js",
+    "evidencia": "npm run test:evidencia && npm run evidencia:navegador",
+    "lint": "eslint .",
+    "lint:reporte": "node scripts/lint-reporte.js",
+    "test:unit": "node --experimental-vm-modules node_modules/jest/bin/jest.js --runInBand tests/unit",
+    "test:integration": "node --test tests/http.test.js tests/seguridad.test.js",
+    "medir": "node scripts/medir.js",
+    "evidencia:devtools": "node scripts/devtools-auditoria.js despues",
+    "lint:respaldo": "node scripts/prelint.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "pg": "^8.23.1"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "^0.5.10",
+    "@eslint/js": "^9.0.0",
+    "eslint": "^9.0.0",
+    "jest": "^30.5.2",
+    "playwright": "^1.56.0"
+  }
+}

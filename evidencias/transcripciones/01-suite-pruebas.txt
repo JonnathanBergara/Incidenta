@@ -1,0 +1,68 @@
+$ npm test
+Test Suites: 4 passed, 4 total
+Tests:       74 passed, 74 total
+Snapshots:   0 total
+Time:        2.703 s, estimated 3 s
+Ran all test suites matching tests/unit.
+[2026-10-21T04:16:17.057Z] POST /api/auth/login -> 200 usuario=anónimo (47 ms)
+[2026-10-21T04:16:17.102Z] POST /api/auth/login -> 200 usuario=anónimo (36 ms)
+[2026-10-21T04:16:17.106Z] GET /api/incidentes -> 401 usuario=anónimo (2 ms)
+[2026-10-21T04:16:17.115Z] GET /api/incidentes -> 200 usuario=lector (8 ms)
+✔ [HTTP-01] Sin token → 401; con token de lector → 200
+[2026-10-21T04:16:17.121Z] GET /healthz -> 200 usuario=anónimo (1 ms)
+✔ [HTTP-06] Health check confirma conexión con PostgreSQL
+[2026-10-21T04:16:17.126Z] POST /api/incidentes -> 201 usuario=admin (2 ms)
+[2026-10-21T04:16:17.130Z] POST /api/incidentes -> 201 usuario=admin (3 ms)
+[2026-10-21T04:16:17.133Z] POST /api/incidentes -> 201 usuario=admin (2 ms)
+[2026-10-21T04:16:17.140Z] GET /api/incidentes -> 200 usuario=lector (4 ms)
+[2026-10-21T04:16:17.144Z] GET /api/incidentes -> 200 usuario=lector (3 ms)
+[2026-10-21T04:16:17.148Z] GET /api/incidentes -> 400 usuario=lector (1 ms)
+✔ [HTTP-05] Listado paginado, filtros y parámetros inválidos
+[2026-10-21T04:16:17.152Z] POST /api/incidentes -> 403 usuario=lector (2 ms)
+[2026-10-21T04:16:17.155Z] POST /api/incidentes -> 201 usuario=admin (2 ms)
+[2026-10-21T04:16:17.161Z] DELETE /api/incidentes/8 -> 204 usuario=admin (3 ms)
+✔ [HTTP-02] Lector no puede crear (403); admin sí (201) y elimina (204)
+[2026-10-21T04:16:17.164Z] POST /api/incidentes -> 400 usuario=anónimo (1 ms)
+[2026-10-21T04:16:17.166Z] POST /api/incidentes -> 413 usuario=anónimo (1 ms)
+✔ [HTTP-03] JSON mal formado → 400 y cuerpo mayor de 10 KB → 413
+[2026-10-21T04:16:17.173Z] GET /api/incidentes -> 200 usuario=admin (5 ms)
+[2026-10-21T04:16:17.175Z] OPTIONS /api/incidentes -> 204 usuario=anónimo (0 ms)
+[2026-10-21T04:16:17.176Z] OPTIONS /api/incidentes -> 403 usuario=anónimo (0 ms)
+✔ [HTTP-04] Cabeceras reales: sin X-Powered-By, con CSP y CORS preflight restringido
+▶ Autenticación
+  ✔ [CP-01] Login correcto devuelve token JWT y rol
+  ✔ [CP-02] Credenciales incorrectas → 401 con el mismo mensaje para usuario inexistente y clave errónea
+  ✔ [CP-03] Acceso SIN token a ruta protegida → 401
+  ✔ [CP-04] Token manipulado (rol alterado, firma original) → 401
+  ✔ [CP-05] Token expirado → 401
+  ✔ [CP-06] Token con alg "none" o firmado con otro secreto → 401
+  ✔ [CP-07] Cabecera Authorization mal formada → 401
+  ✔ [CP-08] Usuario desactivado pierde acceso aunque su token no haya expirado
+✔ Autenticación
+▶ Autorización por roles
+  ✔ [CP-09] Lector intenta CREAR → 403 (permisos insuficientes)
+  ✔ [CP-10] Analista intenta ELIMINAR → 403; lector intenta ACTUALIZAR → 403
+  ✔ [CP-11] Analista no puede crear usuarios; el rol vigente se toma de la base, no del token
+✔ Autorización por roles
+▶ CRUD completo con roles
+  ✔ [CP-12] Crear → consultar → actualizar (PATCH y PUT) → eliminar
+✔ CRUD completo con roles
+▶ Validación y limpieza de entradas
+  ✔ [CP-13] Datos inválidos → 400 con detalle por campo
+  ✔ [CP-14] Campos no permitidos (mass assignment) y tipos incorrectos → 400
+  ✔ [CP-15] XSS: las etiquetas HTML se eliminan antes de guardar
+  ✔ [CP-16] Inyección SQL en id y en búsqueda no tiene efecto
+  ✔ [CP-17] JSON mal formado → 400 genérico; ruta inexistente → 404
+✔ Validación y limpieza de entradas
+▶ Contraseñas, CORS, cabeceras y errores
+  ✔ [CP-18] Las contraseñas se guardan con hash scrypt salado, nunca en claro
+  ✔ [CP-19] CORS: solo orígenes de la lista blanca; nunca "*"
+  ✔ [CP-20] Cabeceras de seguridad, HSTS solo bajo HTTPS, y errores 500 sin filtrar detalles internos
+  ✔ [CP-21] Limitador de intentos: el 4.º intento en la ventana → 429 con Retry-After
+  ✔ [CP-22] JWT: verify rechaza token alterado; sign/verify de ida y vuelta
+  ✔ [CP-23] FORCE_HTTPS: HTTP se redirige (308) a PUBLIC_URL o recibe 426; HTTPS pasa
+✔ Contraseñas, CORS, cabeceras y errores
+ℹ tests 29
+ℹ pass 29
+ℹ fail 0
+ℹ skipped 0

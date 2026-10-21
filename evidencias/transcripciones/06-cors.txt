@@ -1,0 +1,15 @@
+# Preflight desde origen autorizado
+$ curl -i -X OPTIONS http://localhost:3000/api/incidentes \
+    -H "Origin: http://localhost:5173" \
+    -H "Access-Control-Request-Method: POST"
+HTTP 204
+access-control-allow-origin: http://localhost:5173
+access-control-allow-methods: GET,POST,PUT,PATCH,DELETE,OPTIONS
+(sin cuerpo)
+
+# Preflight desde origen NO autorizado
+$ curl -i -X OPTIONS http://localhost:3000/api/incidentes \
+    -H "Origin: https://evil.example" \
+    -H "Access-Control-Request-Method: POST"
+HTTP 403
+{"error":"Origen no permitido por la política CORS."}

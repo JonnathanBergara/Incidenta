@@ -1,0 +1,263 @@
+{
+  "etiqueta": "despues",
+  "fecha": "2026-10-21T03:44:49.344Z",
+  "navegador": "Chromium 156.0.8078.4",
+  "node": "v24.22.0",
+  "consulta": {
+    "filasBD": 20000,
+    "sqlOrden": "created_at DESC, id DESC",
+    "casos": [
+      {
+        "caso": "Listado completo (sin filtros)",
+        "filas": 20000,
+        "mediana_ms": 37.7,
+        "p95_ms": 51.9,
+        "plan": [
+          "SCAN incidentes USING INDEX idx_incidentes_created"
+        ]
+      },
+      {
+        "caso": "Filtro estado = Abierto",
+        "filas": 6667,
+        "mediana_ms": 11.3,
+        "p95_ms": 15.4,
+        "plan": [
+          "SEARCH incidentes USING INDEX idx_incidentes_status_created (status=?)"
+        ]
+      },
+      {
+        "caso": "Filtro estado + prioridad",
+        "filas": 6667,
+        "mediana_ms": 11.7,
+        "p95_ms": 17.6,
+        "plan": [
+          "SEARCH incidentes USING INDEX idx_incidentes_priority_created (priority=?)"
+        ]
+      },
+      {
+        "caso": "Búsqueda de texto \"servidor 12\"",
+        "filas": 541,
+        "mediana_ms": 5.8,
+        "p95_ms": 8.2,
+        "plan": [
+          "SCAN incidentes USING INDEX idx_incidentes_created"
+        ]
+      }
+    ]
+  },
+  "imagen": {
+    "archivo": "docs/img/crear-incidente.webp",
+    "formato": "webp",
+    "bytes": 27968,
+    "ancho": 1000,
+    "alto": 703,
+    "mostrada": 800,
+    "transferido": 28268,
+    "descarga_ms": 0.9,
+    "factorSobredimension": 1.3,
+    "decodificacion_ms_mediana": 5.9
+  },
+  "red": {
+    "motor": "Express",
+    "filasAPI": 2000,
+    "carga": {
+      "peticiones": 10,
+      "bytes": 22204,
+      "sin_cuerpo_304": 0,
+      "navegacion": {
+        "respuesta_ms": 11.200000000186265,
+        "dom_content_loaded_ms": 183.70000000018626,
+        "carga_ms": 183.80000000004657
+      },
+      "detalle": [
+        {
+          "url": "/",
+          "estado": 200,
+          "transferido": 3471,
+          "codificacion": "gzip",
+          "cache": "no-cache",
+          "tipo": "text/html; charset=UTF-8"
+        },
+        {
+          "url": "/css/styles.css",
+          "estado": 200,
+          "transferido": 4090,
+          "codificacion": "gzip",
+          "cache": "no-cache",
+          "tipo": "text/css; charset=UTF-8"
+        },
+        {
+          "url": "/js/main.mjs",
+          "estado": 200,
+          "transferido": 1220,
+          "codificacion": "gzip",
+          "cache": "no-cache",
+          "tipo": "application/javascript; charset=UTF-8"
+        },
+        {
+          "url": "/js/model/sesion.model.mjs",
+          "estado": 200,
+          "transferido": 1236,
+          "codificacion": "gzip",
+          "cache": "no-cache",
+          "tipo": "application/javascript; charset=UTF-8"
+        },
+        {
+          "url": "/js/model/api.mjs",
+          "estado": 200,
+          "transferido": 1783,
+          "codificacion": "gzip",
+          "cache": "no-cache",
+          "tipo": "application/javascript; charset=UTF-8"
+        },
+        {
+          "url": "/js/model/incidentes.model.mjs",
+          "estado": 200,
+          "transferido": 1621,
+          "codificacion": "gzip",
+          "cache": "no-cache",
+          "tipo": "application/javascript; charset=UTF-8"
+        },
+        {
+          "url": "/js/view/incidentes.view.mjs",
+          "estado": 200,
+          "transferido": 3036,
+          "codificacion": "gzip",
+          "cache": "no-cache",
+          "tipo": "application/javascript; charset=UTF-8"
+        },
+        {
+          "url": "/js/controller/app.controller.mjs",
+          "estado": 200,
+          "transferido": 2608,
+          "codificacion": "gzip",
+          "cache": "no-cache",
+          "tipo": "application/javascript; charset=UTF-8"
+        },
+        {
+          "url": "/js/model/reglas.mjs",
+          "estado": 200,
+          "transferido": 2176,
+          "codificacion": "gzip",
+          "cache": "no-cache",
+          "tipo": "application/javascript; charset=UTF-8"
+        },
+        {
+          "url": "/js/view/html.mjs",
+          "estado": 200,
+          "transferido": 963,
+          "codificacion": "ninguna",
+          "cache": "no-cache",
+          "tipo": "application/javascript; charset=UTF-8"
+        }
+      ]
+    },
+    "recarga": {
+      "peticiones": 10,
+      "bytes": 6074,
+      "sin_cuerpo_304": 9,
+      "navegacion": {
+        "respuesta_ms": 3.5999999998603016,
+        "dom_content_loaded_ms": 35.0999999998603,
+        "carga_ms": 35.0999999998603
+      },
+      "detalle": [
+        {
+          "url": "/",
+          "estado": 200,
+          "transferido": 608,
+          "codificacion": "gzip",
+          "cache": "no-cache",
+          "tipo": "text/html; charset=UTF-8"
+        },
+        {
+          "url": "/css/styles.css",
+          "estado": 304,
+          "transferido": 608,
+          "codificacion": "ninguna",
+          "cache": "no-cache",
+          "tipo": ""
+        },
+        {
+          "url": "/js/main.mjs",
+          "estado": 304,
+          "transferido": 607,
+          "codificacion": "ninguna",
+          "cache": "no-cache",
+          "tipo": ""
+        },
+        {
+          "url": "/js/model/sesion.model.mjs",
+          "estado": 304,
+          "transferido": 607,
+          "codificacion": "ninguna",
+          "cache": "no-cache",
+          "tipo": ""
+        },
+        {
+          "url": "/js/model/api.mjs",
+          "estado": 304,
+          "transferido": 607,
+          "codificacion": "ninguna",
+          "cache": "no-cache",
+          "tipo": ""
+        },
+        {
+          "url": "/js/model/incidentes.model.mjs",
+          "estado": 304,
+          "transferido": 607,
+          "codificacion": "ninguna",
+          "cache": "no-cache",
+          "tipo": ""
+        },
+        {
+          "url": "/js/view/incidentes.view.mjs",
+          "estado": 304,
+          "transferido": 608,
+          "codificacion": "ninguna",
+          "cache": "no-cache",
+          "tipo": ""
+        },
+        {
+          "url": "/js/controller/app.controller.mjs",
+          "estado": 304,
+          "transferido": 608,
+          "codificacion": "ninguna",
+          "cache": "no-cache",
+          "tipo": ""
+        },
+        {
+          "url": "/js/model/reglas.mjs",
+          "estado": 304,
+          "transferido": 607,
+          "codificacion": "ninguna",
+          "cache": "no-cache",
+          "tipo": ""
+        },
+        {
+          "url": "/js/view/html.mjs",
+          "estado": 304,
+          "transferido": 607,
+          "codificacion": "ninguna",
+          "cache": "no-cache",
+          "tipo": ""
+        }
+      ]
+    },
+    "api": {
+      "solicitudes": 12,
+      "estado": 200,
+      "codificacion": "gzip",
+      "cabeceras": {
+        "content-type": "application/json; charset=utf-8",
+        "content-encoding": "gzip",
+        "cache-control": "no-store",
+        "vary": "Accept-Encoding"
+      },
+      "transferido_bytes": 2714,
+      "decodificado_bytes": 43010,
+      "mediana_ms": 4.4,
+      "p95_ms": 8.4
+    }
+  }
+}
