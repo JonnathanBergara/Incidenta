@@ -2,15 +2,20 @@
 
 ## Acceso
 
-1. Abre el enlace HTTPS que te comparta el administrador.
+1. Abre [Incidenta](https://plataforma-incidenta.onrender.com) por HTTPS.
 2. Inicia sesión con el nombre de usuario y contraseña que te haya entregado
    por un canal privado. No compartas una cuenta con otros usuarios.
 3. Pulsa **Cerrar sesión** al terminar, especialmente en un equipo compartido.
 
-No hay contraseña universal. El administrador define las cuentas iniciales al
-configurar el despliegue. La interfaz no incluye recuperación automática de
-contraseña; si no puedes entrar, contacta al administrador para que aprovisione
-una cuenta de reemplazo. No envíes tu clave por correo o chat.
+Las cuentas iniciales del despliegue son `admin`, `analista` y `lector`. La
+contraseña de `admin` es la que se configuró en Render como
+`SEED_ADMIN_PASSWORD`; las contraseñas de los otros roles también las definió
+el propietario durante el despliegue. No existe una contraseña predeterminada
+y nadie puede consultar las claves en texto claro. La interfaz no ofrece
+recuperación automática: si se pierde una contraseña, contacta al
+administrador del sistema para que aplique el procedimiento de recuperación
+aprobado. Cambiar una variable `SEED_*_PASSWORD` después de crear la cuenta no
+rota su clave. Nunca envíes una contraseña por correo, chat o captura.
 
 ## Funciones por rol
 
@@ -71,6 +76,10 @@ la organización.
 
 ## Problemas frecuentes
 
+- **La contraseña de admin no funciona:** confirma que el usuario sea
+  `admin` y utiliza el valor original configurado en Render como
+  `SEED_ADMIN_PASSWORD`. Cambiar esa variable después no cambia la contraseña
+  almacenada.
 - **La página tarda al abrirse:** el hosting gratuito puede haberse dormido.
   Espera la reactivación y vuelve a cargar si es necesario.
 - **401 / sesión vencida:** inicia sesión nuevamente.
@@ -79,3 +88,11 @@ la organización.
   filtros y busca por título.
 - **Servicio no disponible:** informa el URL y hora al administrador; no
   compartas datos de acceso.
+
+## Disponibilidad
+
+El despliegue de demostración usa planes gratuitos. Render puede suspender la
+instancia cuando queda inactiva, por lo que el primer acceso posterior puede
+tardar alrededor de un minuto. Neon mantiene la base de datos por separado,
+pero su plan tiene cuotas y límites; evita datos personales sensibles y no
+consideres este entorno un servicio con SLA o copias de seguridad garantizadas.

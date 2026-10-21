@@ -9,13 +9,13 @@ observabilidad básica, health check, pruebas, CI y configuración de
 despliegue. La aplicación sirve una SPA tradicional en HTML/CSS/JavaScript
 modular y una API REST dentro del mismo origen.
 
-El proyecto se prepara para GitHub y para Render Free + Neon Free. En el
-momento de esta memoria no se afirma que se haya publicado una URL o empujado
-el código a un remoto: el entorno no está autenticado en las cuentas del
-propietario y debe completarse el alta/conexión de los servicios indicada en
-la guía de despliegue. Las capturas de la interfaz y DevTools son evidencia
-gráfica real de ejecuciones locales previas; no prueban que exista un entorno
-de producción.
+El código está publicado en
+[JonnathanBergara/Incidenta](https://github.com/JonnathanBergara/Incidenta),
+rama `main`, y la versión de demostración está desplegada con Render Free y
+Neon Free. URL pública: <https://plataforma-incidenta.onrender.com>. El
+21/10/2026 se verificaron el estado Live en Render, la carga de la interfaz y
+`GET /healthz` con HTTP 200 y `{"status":"ok"}`. Este despliegue acredita
+conectividad con Neon; las pruebas automatizadas siguen usando PGlite.
 
 ## 2. Arquitectura y decisiones
 
@@ -96,13 +96,32 @@ CORS, errores, límites y health check. GitHub Actions ejecuta `npm ci`,
 `npm test` y `npm run lint` al hacer push a `main` o abrir una PR.
 
 En la última ejecución local se aprobaron 74 pruebas Jest y 29 de integración;
-ESLint 9 reportó cero errores y advertencias en 47 archivos. El recorrido real
+ESLint 9 reportó cero errores y advertencias en 47 archivos. GitHub Actions
+también completó con éxito el flujo de CI del commit `613e2ca`, ejecutado en
+Node 22 y con zona horaria `America/Guayaquil`. El recorrido real
 de navegador generó 13 capturas para lector, analista y admin. El proyecto se
-validó con Node v24.22.0; el flujo de CI está fijado en Node 22 y queda sujeto a
-su primera ejecución tras publicar el repositorio.
+validó localmente con Node v24.22.0; el flujo de CI se ejecutó en GitHub con
+Node 22 y terminó exitosamente en el commit desplegado.
 `npm audit --omit=dev` no encontró vulnerabilidades en dependencias de
 producción; el árbol completo conserva 19 alertas moderadas en herramientas de
 desarrollo y pruebas.
+
+La validación de despliegue se acotó deliberadamente a las comprobaciones
+realizadas: Render informó el servicio Live, los logs confirmaron el resultado
+de migraciones y seed, `/healthz` contestó HTTP 200 y la página pública sirvió
+la aplicación. No se utilizó una contraseña para iniciar sesión remotamente,
+ni se creó/actualizó/eliminó un incidente de producción. La suite de
+integración sí ejecuta CRUD y permisos contra un servidor Express real con
+PGlite, pero eso no representa una transacción en la base de Neon.
+
+Durante la puesta en marcha se corrigieron dos fallos observados, sin exponer
+los secretos: la contraseña inicial de admin no cumplía el mínimo de 12
+caracteres con letras y números, y GitHub Actions ejecutaba las pruebas en
+UTC mientras la expectativa de fecha era la zona de Ecuador. Se ajustó la
+configuración de la contraseña en el proveedor y se fijó
+`TZ=America/Guayaquil` en CI; el despliegue posterior quedó Live y la ejecución
+de CI del commit `613e2ca` aprobó. Los intentos fallidos previos no son el
+estado actual del servicio.
 
 La medición SQL actual ejecuta PGlite con 20 000 filas: listado completo,
 mediana 284.2 ms; filtro de estado, 95.9 ms; búsqueda, 30.1 ms. La imagen WebP
@@ -134,11 +153,23 @@ anteriores al cambio de persistencia:
 
 *Figura 4. Grabación real de Performance durante búsqueda filtrada.*
 
-Las capturas anteriores al cambio PostgreSQL prueban el aspecto y la
-interacción web local, no conectividad con Neon. La prueba automatizada actual
-de PostgreSQL se realiza con PGlite, tampoco con Neon. La captura del panel
+Las capturas de DevTools anteriores al cambio PostgreSQL prueban el aspecto y
+la interacción web local, no conectividad con Neon. La captura del panel
 Sensors y una captura de alta POST de DevTools siguen pendientes; se describen
 en `evidencias/devtools/CAPTURAS-MANUALES.md`.
+
+### Evidencia del despliegue público
+
+![Panel real de Render mostrando el despliegue Live](../evidencias/produccion-render-live.png)
+
+*Figura 5. Servicio `plataforma-incidenta` en estado Live; se observan las
+migraciones y el seed satisfactorios. Captura tomada del panel real de Render.*
+
+![Pantalla real de inicio de sesión en producción](../evidencias/produccion-login.png)
+
+*Figura 6. Interfaz pública HTTPS con el diálogo de inicio de sesión. La
+captura no contiene contraseñas ni acredita un login: las credenciales son
+secretos del propietario.*
 
 ## 6. Despliegue y límites
 
@@ -154,6 +185,17 @@ realizar `pg_dump` privado y ensayar restauración antes de datos reales. El
 rate limiter actual es local a una instancia; para escalar horizontalmente
 debe trasladarse a un almacén compartido. El despliegue gratuito se recomienda
 como demo académica, no para incidentes operacionales o información sensible.
+
+### Estado verificado de producción
+
+El servicio `plataforma-incidenta` se desplegó desde
+[JonnathanBergara/Incidenta](https://github.com/JonnathanBergara/Incidenta),
+rama `main`, commit `613e2ca`, y quedó Live. Render completó las cuatro
+migraciones, insertó cuatro incidentes de ejemplo y creó las cuentas
+`admin`, `analista` y `lector`. `DATABASE_URL` y las contraseñas iniciales
+se configuraron como secretos y no se reproducen aquí. La aplicación está
+disponible en <https://plataforma-incidenta.onrender.com>; el health check
+público respondió HTTP 200 con `{"status":"ok"}`.
 
 ## 7. Reproducción
 

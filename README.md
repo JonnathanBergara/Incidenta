@@ -4,11 +4,11 @@ Aplicación web de gestión de incidentes con API REST, autenticación JWT y
 permisos por rol. Cliente HTML/CSS/JavaScript MVC; servidor Node.js + Express;
 PostgreSQL para persistencia.
 
-> **Estado del despliegue:** el código está publicado en
-> [GitHub](https://github.com/JonnathanBergara/Incidenta), pero todavía no hay
-> un servicio público desplegado. Está preparado para Render Free + Neon Free;
-> las cuentas gratuitas tienen límites y el servicio web puede dormir por
-> inactividad. No se declara una URL de aplicación hasta comprobar el despliegue.
+> **Aplicación en producción de demostración:** [Incidenta](https://plataforma-incidenta.onrender.com).
+> El estado Live y `GET /healthz` (HTTP 200, `{"status":"ok"}`) se verificaron
+> el 21/10/2026. El código está en
+> [GitHub](https://github.com/JonnathanBergara/Incidenta). Render Free puede
+> dormir por inactividad y Neon Free tiene cuotas; no es un SLA de producción.
 
 ## Funcionalidad
 
@@ -97,6 +97,8 @@ dejar la app temporalmente inaccesible.
 
 - [Memoria técnica](docs/MEMORIA-TECNICA.md)
 - [Guía de usuario](docs/GUIA-USUARIO.md)
+- [Memoria técnica en Word](docs/MEMORIA-TECNICA.docx)
+- [Guía de usuario en Word](docs/GUIA-USUARIO.docx)
 - [Presentación PowerPoint](docs/Incidenta-presentacion.pptx)
 - [Informe de calidad y mediciones](docs/INFORME-CALIDAD.md)
 - [Capturas y guía DevTools](evidencias/devtools/CAPTURAS-MANUALES.md)

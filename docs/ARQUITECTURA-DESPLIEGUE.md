@@ -127,6 +127,26 @@ SQLite persistente.
 6. Probar login y CRUD con cuentas de prueba; eliminar los datos de ensayo.
    Después, comparte el URL `https://...onrender.com`, no credenciales admin.
 
+### Despliegue de demostración verificado
+
+Esta instancia ya quedó publicada en
+<https://plataforma-incidenta.onrender.com>, desde
+[JonnathanBergara/Incidenta](https://github.com/JonnathanBergara/Incidenta),
+rama `main`, commit `613e2ca`. Render informó estado **Live**; el arranque
+completó las cuatro migraciones y creó los datos y usuarios iniciales. El
+21/10/2026 se verificó externamente `GET /healthz` con HTTP 200 y
+`{"status":"ok"}`, además de la respuesta HTML de la página principal. Estas
+comprobaciones confirman despliegue y conexión de salud a PostgreSQL, pero no
+sustituyen una prueba de inicio de sesión y CRUD con las credenciales del
+propietario.
+
+Las cuentas iniciales son `admin`, `analista` y `lector`; sus contraseñas son
+los valores privados configurados en Render durante el primer despliegue. No
+se incluyen aquí. Cambiar variables `SEED_*_PASSWORD` después de crear las
+cuentas no modifica sus claves existentes. Para revisar el despliegue actual,
+usar **Render → servicio plataforma-incidenta → Deploys/Logs** y el endpoint
+de salud de arriba.
+
 ### Límites que afectan la disponibilidad
 
 Render Free duerme el servicio tras inactividad (aprox. 15 min), y el primer
