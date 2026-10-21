@@ -4,11 +4,11 @@ Aplicación web de gestión de incidentes con API REST, autenticación JWT y
 permisos por rol. Cliente HTML/CSS/JavaScript MVC; servidor Node.js + Express;
 PostgreSQL para persistencia.
 
-> **Estado del despliegue:** el repositorio remoto y el servicio público aún
-> deben crearse/conectarse desde las cuentas del propietario. El código está
-> preparado para Render Free + Neon Free; las cuentas gratuitas tienen límites
-> y el servicio web puede dormir por inactividad. No se declara una URL pública
-> hasta comprobar un despliegue real.
+> **Estado del despliegue:** el código está publicado en
+> [GitHub](https://github.com/JonnathanBergara/Incidenta), pero todavía no hay
+> un servicio público desplegado. Está preparado para Render Free + Neon Free;
+> las cuentas gratuitas tienen límites y el servicio web puede dormir por
+> inactividad. No se declara una URL de aplicación hasta comprobar el despliegue.
 
 ## Funcionalidad
 

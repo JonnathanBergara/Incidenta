@@ -112,8 +112,9 @@ SQLite persistente.
    código, capturas ni chat. Neon informa actualmente cuota y límites en
    [sus planes](https://neon.com/docs/introduction/plans); confirmar límites
    y requisitos vigentes antes del uso.
-2. Crear o subir el repositorio público `JonnathanBergara/PlataformaIncidenta`
-   a GitHub; no inicializarlo con archivos duplicados.
+2. El código está publicado en
+   [JonnathanBergara/Incidenta](https://github.com/JonnathanBergara/Incidenta),
+   rama `main`.
 3. Iniciar sesión en Render, **New → Blueprint**, seleccionar el repositorio y
    aplicar `render.yaml`.
 4. En las variables del servicio, agregar `DATABASE_URL` (Neon URI) y tres
