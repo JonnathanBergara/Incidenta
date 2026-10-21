@@ -133,50 +133,102 @@ motor embebido PGlite y transferencia de filas en este entorno, no son un
 benchmark de Neon; tampoco son directamente comparables con los resultados
 históricos SQLite incluidos en el informe anterior.
 
-El recorrido Chromium local recién ejecutado generó 13 capturas para los
-roles. Las capturas de DevTools son evidencia gráfica de sesiones locales
-anteriores al cambio de persistencia:
+El recorrido Chromium generó capturas de los tres roles. A continuación se
+presenta evidencia visual de producción, integración, API, código y DevTools.
+Las figuras identifican el entorno de origen; las pruebas de navegador
+automatizadas locales no se presentan como transacciones contra Neon.
 
-![Cliente Incidenta y recorrido de lectura](../evidencias/integracion/03-lector-listado-solo-lectura.png)
+### Evidencia de la aplicación y API en producción
 
-*Figura 1. Interfaz real del cliente, sesión con rol lector.*
+![Página pública y login de Incidenta](../evidencias/produccion-login.png)
 
-![Captura real de Elements](../evidencias/devtools/captura-elements-real.png)
+*Figura 1. Interfaz HTTPS pública de Incidenta. La pantalla solicita iniciar
+sesión; no representa un usuario autenticado.*
 
-*Figura 2. Chrome DevTools Elements inspeccionando la fecha del encabezado.*
+![Panel de Render en estado Live](../evidencias/produccion-render-live.png)
 
-![Captura real de Network](../evidencias/devtools/captura-network-real.png)
+*Figura 2. Captura del panel real de Render: despliegue Live y logs de
+migraciones y usuarios iniciales. No se muestran variables secretas.*
 
-*Figura 3. Chrome DevTools Network muestra solicitudes y listado paginado.*
+![Respuesta pública del health check](../evidencias/produccion-api-healthz.png)
 
-![Captura real de Performance](../evidencias/devtools/captura-performance-real.png)
+*Figura 3. Endpoint real `GET /healthz`: respuesta `{"status":"ok"}` desde
+producción.*
 
-*Figura 4. Grabación real de Performance durante búsqueda filtrada.*
+![API de incidentes solicita autenticación](../evidencias/produccion-api-401.png)
 
-Las capturas de DevTools anteriores al cambio PostgreSQL prueban el aspecto y
-la interacción web local, no conectividad con Neon. La captura del panel
-Sensors y una captura de alta POST de DevTools siguen pendientes; se describen
-en `evidencias/devtools/CAPTURAS-MANUALES.md`.
+*Figura 4. Endpoint real `GET /api/incidentes` sin token: responde 401 y no
+expone el listado. Es evidencia de autenticación en la API publicada.*
 
-### Evidencia del despliegue público
+### Evidencia de roles y operaciones CRUD en integración
 
-![Panel real de Render mostrando el despliegue Live](../evidencias/produccion-render-live.png)
+![Vista de lector](../evidencias/integracion/03-lector-listado-solo-lectura.png)
 
-*Figura 5. Servicio `plataforma-incidenta` en estado Live; se observan las
-migraciones y el seed satisfactorios. Captura tomada del panel real de Render.*
+*Figura 5. Recorrido automatizado local: el rol lector consulta el listado y
+no tiene formulario de escritura.*
 
-![Pantalla real de inicio de sesión en producción](../evidencias/produccion-login.png)
+![Creación de incidente por analista](../evidencias/integracion/06-analista-crear-ok-201.png)
 
-*Figura 6. Interfaz pública HTTPS con el diálogo de inicio de sesión. La
-captura no contiene contraseñas ni acredita un login: las credenciales son
-secretos del propietario.*
+*Figura 6. Recorrido automatizado local: analista crea un incidente y recibe
+confirmación HTTP 201.*
+
+![Validación del servidor](../evidencias/integracion/07-analista-validacion-servidor-400.png)
+
+*Figura 7. Recorrido automatizado local: entrada inválida rechazada con HTTP
+400 y detalle de validación.*
+
+![Acción denegada por rol](../evidencias/integracion/10-mensaje-403-sin-permisos.png)
+
+*Figura 8. Recorrido automatizado local: una acción no permitida se rechaza
+con HTTP 403.*
+
+![Eliminación de incidente como admin](../evidencias/integracion/13-admin-eliminar-ok-204.png)
+
+*Figura 9. Recorrido automatizado local: eliminación autorizada para admin,
+con respuesta HTTP 204.*
+
+### Evidencia de implementación y calidad
+
+![Definiciones de rutas y permisos](../evidencias/codigo-01-roles-rutas.png)
+
+*Figura 10. Captura de código de `src/routes/definiciones.js`: autorización
+por rol y validadores aplicados antes de los controladores.*
+
+![Hash de contraseñas](../evidencias/codigo-04-hash-scrypt.png)
+
+*Figura 11. Captura de código de seguridad: hash scrypt para almacenar
+contraseñas, no texto claro.*
+
+![Pruebas Jest](../evidencias/captura-01-suite-pruebas.png)
+
+*Figura 12. Captura de terminal con la ejecución de pruebas unitarias.*
+
+![Prueba de Network en DevTools](../evidencias/devtools/captura-network-real.png)
+
+*Figura 13. Chrome DevTools Network en una sesión de prueba local; permite
+observar solicitudes y respuestas del cliente.*
+
+![Perfil de rendimiento en DevTools](../evidencias/devtools/captura-performance-real.png)
+
+*Figura 14. Chrome DevTools Performance durante una búsqueda en una sesión de
+prueba local.*
+
+![Plan de consulta SQL medido](../evidencias/calidad/consulta-plan.png)
+
+*Figura 15. Evidencia visual del plan de consulta e índices; corresponde a
+mediciones locales, no a un plan capturado en Neon.*
+
+Las figuras 5–15 documentan pruebas locales, código o mediciones previas y no
+son transacciones de producción. En particular, no se creó, actualizó ni
+eliminó un incidente en la base desplegada durante esta verificación. Las
+capturas de DevTools Sensors y de un POST exitoso en DevTools quedan como
+pendientes manuales, indicadas en `evidencias/devtools/CAPTURAS-MANUALES.md`.
 
 ## 6. Despliegue y límites
 
 El Blueprint `render.yaml` configura Node, `npm ci`, `npm start` y
-`/healthz`; la base Neon se provisiona por separado. Tras enlazar un repo
-GitHub, configurar `DATABASE_URL` y secretos, el host obtiene un subdominio
-HTTPS y redeploya al actualizar `main`.
+`/healthz`; la base Neon se provisionó por separado y el servicio obtuvo un
+subdominio HTTPS.
 
 Render Free puede dormir una instancia inactiva y demorar su reactivación.
 Neon Free limita almacenamiento/cómputo y suspende compute tras inactividad.
