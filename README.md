@@ -99,6 +99,8 @@ dejar la app temporalmente inaccesible.
 - [Guía de usuario](docs/GUIA-USUARIO.md)
 - [Memoria técnica en Word](docs/MEMORIA-TECNICA.docx)
 - [Guía de usuario en Word](docs/GUIA-USUARIO.docx)
+- [Guion de defensa en Word (máximo 10 minutos)](docs/GUION-DEFENSA-VIDEO.docx)
+- [Guion de defensa en Markdown](docs/GUION-DEFENSA-VIDEO.md)
 - [Presentación PowerPoint](docs/Incidenta-presentacion.pptx)
 - [Informe de calidad y mediciones](docs/INFORME-CALIDAD.md)
 - [Capturas y guía DevTools](evidencias/devtools/CAPTURAS-MANUALES.md)
